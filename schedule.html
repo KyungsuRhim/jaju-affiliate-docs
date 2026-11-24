@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAJU 통합테스트 ~ 오픈 시나리오</title>
+<link rel="icon" type="image/x-icon" href="favicon-v2.ico">
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
+<style>
+:root{--ink:#191f28;--soft:#6b7684;--line:#e5e8eb;--bg:#f7f8fa;--red:#f04452;--blue:#3182f6}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:'Pretendard Variable',Pretendard,-apple-system,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+.k-jaju{--k:#1f9d63;--kb:#e5f6ed;--kt:#11663f}
+.k-aff{--k:#ef7d1a;--kb:#fff1e2;--kt:#9a4a05}
+header{background:#fff;border-bottom:1px solid var(--line);padding:32px 40px 0;position:sticky;top:0;z-index:10}
+.wrap{max-width:1320px;margin:0 auto}
+.eyebrow{font-size:12px;font-weight:700;color:var(--soft);letter-spacing:.02em}
+h1{margin:6px 0 4px;font-size:30px;font-weight:800;letter-spacing:-.02em}
+.period{font-size:14px;color:var(--soft);font-variant-numeric:tabular-nums}
+.legend{display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:13px;color:#4e5968;margin:16px 0 0}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--k)}
+.legend .td{color:var(--red);font-weight:700}
+nav.tabs{display:flex;gap:4px;margin-top:20px}
+nav.tabs a{padding:12px 16px;font-size:14px;font-weight:600;color:var(--soft);text-decoration:none;border-bottom:3px solid transparent}
+nav.tabs a:hover{color:var(--ink)}
+nav.tabs a.on{color:var(--ink);border-bottom-color:var(--blue)}
+main{padding:28px 40px 80px}
+section{display:none}
+section.on{display:block}
+h2{font-size:20px;font-weight:800;margin:0 0 14px;letter-spacing:-.01em}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px}
+.gantt-scroll{overflow-x:auto}
+.gantt{position:relative;min-width:max-content}
+.g-head,.g-row{display:flex}
+.g-label{position:sticky;left:0;z-index:2;flex:0 0 310px;width:310px;background:#fff;border-right:1px solid var(--line);padding:7px 16px;font-size:13px;line-height:1.35;display:flex;flex-direction:column;justify-content:center}
+.g-label small{color:var(--soft);font-size:11.5px;font-variant-numeric:tabular-nums}
+.g-row{border-top:1px solid #f2f4f6;min-height:40px}
+.g-row.grp .g-label{font-weight:700;background:var(--kb);color:var(--kt)}
+.g-row.l1 .g-label{padding-left:30px}
+.g-row.l2 .g-label{padding-left:46px;color:#4e5968}
+.g-track{position:relative;flex:none}
+.g-bar{position:absolute;top:11px;height:18px;border-radius:5px;background:var(--k)}
+.g-row.grp .g-bar{background:var(--kb);border:1.5px solid var(--k);top:10px;height:20px}
+.g-row.l2 .g-bar{opacity:.7;top:13px;height:14px}
+.g-ms{position:absolute;top:12px;width:16px;height:16px;background:var(--k);transform:rotate(45deg);border-radius:2px}
+.g-head{position:sticky;top:0;z-index:3;background:#fafbfc;border-bottom:1px solid var(--line)}
+.g-head .g-label{background:#fafbfc;font-weight:700;color:var(--soft);font-size:12px}
+.g-scale{position:relative;flex:none;height:50px}
+.g-scale span{position:absolute;font-size:11.5px;color:var(--soft);white-space:nowrap;font-variant-numeric:tabular-nums}
+.g-scale .m{top:7px;font-weight:800;color:var(--ink)}
+.g-scale .w{top:28px}
+.g-today{position:absolute;top:0;bottom:0;width:2px;background:var(--red);z-index:1;pointer-events:none}
+.g-today b{position:absolute;top:3px;left:5px;font-size:11px;color:var(--red);white-space:nowrap}
+.hint{font-size:12px;color:var(--soft);margin-top:8px}
+.phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:16px}
+.phase{overflow:hidden}
+.phase-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:16px 18px;background:var(--kb);border-bottom:1px solid var(--line)}
+.phase-h b{font-size:16px;color:var(--kt)}
+.phase-h span{font-size:13px;color:var(--kt);font-variant-numeric:tabular-nums;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td{padding:11px 18px;border-top:1px solid #f2f4f6;vertical-align:top}
+tr:first-child td{border-top:0}
+td.d{white-space:nowrap;color:#4e5968;font-variant-numeric:tabular-nums;text-align:right;width:150px}
+td.l2{padding-left:38px;color:#4e5968}
+.tl{padding:10px 0}
+.tl-item{display:grid;grid-template-columns:130px 26px 1fr;gap:12px;padding:12px 22px;align-items:start}
+.tl-time{font-weight:800;font-size:15px;font-variant-numeric:tabular-nums}
+.tl-dot{position:relative;min-height:28px;height:100%}
+.tl-dot:before{content:"";position:absolute;left:50%;top:5px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--k)}
+.tl-dot.ms:before{width:14px;height:14px;margin-left:-7px;border-radius:2px;transform:rotate(45deg)}
+.tl-dot:after{content:"";position:absolute;left:50%;top:22px;bottom:-16px;width:2px;margin-left:-1px;background:var(--line)}
+.tl-item:last-child .tl-dot:after{display:none}
+.tl-name{font-size:15px;line-height:1.5}
+.tl-item.ms .tl-name{font-weight:800}
+.tl-name small{display:inline-block;margin-left:8px;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--kb);color:var(--kt);vertical-align:1px}
+footer{font-size:12px;color:var(--soft);margin-top:28px}
+@media (max-width:760px){header{padding:22px 18px 0;position:static}main{padding:20px 18px 60px}h1{font-size:24px}.g-label{flex-basis:200px;width:200px}.phases{grid-template-columns:1fr}.tl-item{grid-template-columns:96px 20px 1fr;padding:12px 14px}td.d{width:auto}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">JAJU 제휴 연동</div>
+<h1>통합테스트 ~ 오픈 시나리오</h1>
+<div class="period">2026.11.16 (월) ~ 2027.01.15 (금) 오픈</div>
+<div class="legend"><span class="k-jaju"><i></i>자주몰/공통 일정</span><span class="k-aff"><i></i>제휴몰 일정</span><span class="td">┃ 오늘</span><span>◆ 하루 일정</span></div>
+<nav class="tabs" role="tablist">
+<a href="#all" data-t="all">전체 일정</a>
+<a href="#phase" data-t="phase">단계별 일정</a>
+<a href="#open" data-t="open">오픈 당일 (1/15)</a>
+</nav>
+</div></header>
+<main><div class="wrap">
+<section id="s-all"><h2>전체 일정</h2><div class="card gantt-scroll"><div class="gantt" id="gantt"></div></div><div class="hint">← 좌우로 스크롤할 수 있습니다 · 막대에 마우스를 올리면 기간이 보입니다</div></section>
+<section id="s-phase"><h2>단계별 일정</h2><div class="phases" id="phases"></div></section>
+<section id="s-open"><h2>2027.01.15 오픈 당일 진행 순서</h2><div class="card tl" id="tl"></div></section>
+<footer>일정 기준: Notion JAJU 작업 일정 (2026-11-24 기준)</footer>
+</div></main>
+<script>
+const DATA = {"start": "2026-11-16", "end": "2027-01-17", "items": [{"kind": "aff", "level": 0, "name": "제휴몰 통합 테스트", "start": "2026-11-16", "end": "2026-12-11"}, {"kind": "aff", "level": 1, "name": "통합 테스트", "start": "2026-11-16", "end": "2026-12-11"}, {"kind": "aff", "level": 2, "name": "내부 테스트", "start": "2026-11-16", "end": "2026-11-27"}, {"kind": "aff", "level": 2, "name": "추가 개발건 / 디버깅", "start": "2026-11-19", "end": "2026-12-11"}, {"kind": "aff", "level": 2, "name": "외부 테스트", "start": "2026-11-30", "end": "2026-12-11"}, {"kind": "jaju", "level": 0, "name": "자주몰 통합 테스트", "start": "2026-11-23", "end": "2027-01-08"}, {"kind": "jaju", "level": 1, "name": "PC Front 테스트", "start": "2026-11-24", "end": "2026-11-27"}, {"kind": "jaju", "level": 2, "name": "(2차) 데이터 이행", "start": "2026-11-24"}, {"kind": "jaju", "level": 1, "name": "Admin 세팅 테스트", "start": "2026-11-30", "end": "2026-12-04"}, {"kind": "jaju", "level": 1, "name": "Mobile Device 테스트", "start": "2026-12-07", "end": "2026-12-11"}, {"kind": "jaju", "level": 1, "name": "(3차) 데이터 이행", "start": "2026-12-15", "end": "2026-12-16"}, {"kind": "jaju", "level": 1, "name": "APP 테스트 (테스트 APP)", "start": "2026-12-15", "end": "2026-12-18"}, {"kind": "jaju", "level": 1, "name": "stg → 운영 전환 (NAS, 상품정보입력)", "start": "2026-12-21", "end": "2026-12-24"}, {"kind": "jaju", "level": 1, "name": "블라인드 테스트 & 디버깅", "start": "2026-12-28", "end": "2027-01-08"}, {"kind": "aff", "level": 0, "name": "제휴몰 오픈 준비", "start": "2026-12-15", "end": "2027-01-14"}, {"kind": "aff", "level": 1, "name": "제휴몰 운영 서버 연결", "start": "2026-12-15", "end": "2026-12-16"}, {"kind": "aff", "level": 1, "name": "상품 연동 (운영 → 운영)", "start": "2026-12-17"}, {"kind": "aff", "level": 1, "name": "전시 준비", "start": "2026-12-18", "end": "2027-01-14"}, {"kind": "jaju", "level": 0, "name": "자주몰 오픈 준비", "start": "2027-01-11", "end": "2027-01-14"}, {"kind": "jaju", "level": 1, "name": "오픈 준비", "start": "2027-01-11", "end": "2027-01-14"}, {"kind": "jaju", "level": 0, "name": "자주몰 오픈", "start": "2027-01-15", "time": "10:00 오픈"}, {"kind": "jaju", "level": 1, "name": "(최종) 데이터 이행", "start": "2027-01-15", "time": "07:00"}, {"kind": "jaju", "level": 1, "name": "신규 상품 정보 입력 및 자주몰 전시 준비", "start": "2027-01-15", "time": "07:00 ~ 10:00"}, {"kind": "jaju", "level": 1, "name": "자주몰 오픈", "start": "2027-01-15", "time": "10:00"}, {"kind": "aff", "level": 0, "name": "제휴몰 오픈", "start": "2027-01-15", "time": "12:00 · 14:00 오픈"}, {"kind": "aff", "level": 1, "name": "신규상품 제휴몰 전시 준비", "start": "2027-01-15", "time": "10:00 ~ 12:00"}, {"kind": "aff", "level": 1, "name": "신세계V 오픈", "start": "2027-01-15", "time": "12:00"}, {"kind": "aff", "level": 1, "name": "EC모니터, 신세계몰 오픈", "start": "2027-01-15", "time": "14:00"}], "phases": [["제휴몰 통합 테스트", 0, 5], ["자주몰 통합 테스트", 5, 14], ["제휴몰 오픈 준비", 14, 18], ["자주몰 오픈 준비", 18, 20], ["자주몰 오픈 (1/15)", 20, 24], ["제휴몰 오픈 (1/15)", 24, 28]], "timeline": [{"time": "07:00", "name": "(최종) 데이터 이행", "kind": "jaju"}, {"time": "07:00 ~ 10:00", "name": "신규 상품 정보 입력 및 자주몰 전시 준비", "kind": "jaju"}, {"time": "10:00", "name": "자주몰 오픈", "kind": "jaju", "ms": true}, {"time": "10:00 ~ 12:00", "name": "신규상품 제휴몰 전시 준비", "kind": "aff"}, {"time": "12:00", "name": "신세계V 오픈", "kind": "aff", "ms": true}, {"time": "14:00", "name": "EC모니터, 신세계몰 오픈", "kind": "aff", "ms": true}]};
+const KIND={jaju:{cls:'k-jaju',label:'자주몰/공통'},aff:{cls:'k-aff',label:'제휴몰'}};
+const DAY=86400000, DW=13, LW=310;
+const d=s=>new Date(s+'T00:00:00');
+const fmt=s=>{const x=d(s);return (x.getMonth()+1)+'/'+x.getDate();};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const range=it=>(it.end&&it.end!==it.start)?fmt(it.start)+' ~ '+fmt(it.end):fmt(it.start)+(it.time?' '+it.time:'');
+(function gantt(){
+  const S=d(DATA.start),E=d(DATA.end),days=Math.round((E-S)/DAY)+1,W=days*DW;
+  const off=s=>Math.round((d(s)-S)/DAY)*DW;
+  let fm=0;{const x=new Date(S);while(x.getDay()!==1){x.setDate(x.getDate()+1);fm++;}}
+  const grid='repeating-linear-gradient(to right,transparent 0,transparent '+(7*DW-1)+'px,#eef0f3 '+(7*DW-1)+'px,#eef0f3 '+(7*DW)+'px)';
+  const g=document.getElementById('gantt');
+  let sc='';
+  for(let i=0;i<days;i++){const x=new Date(S.getTime()+i*DAY);
+    if(i===0||x.getDate()===1)sc+='<span class="m" style="left:'+(i*DW+4)+'px">'+x.getFullYear()+'.'+(x.getMonth()+1)+'</span>';
+    if(x.getDay()===1)sc+='<span class="w" style="left:'+(i*DW+2)+'px">'+(x.getMonth()+1)+'/'+x.getDate()+'</span>';}
+  let h='<div class="g-head"><div class="g-label">작업</div><div class="g-scale" style="width:'+W+'px">'+sc+'</div></div>';
+  DATA.items.forEach(it=>{
+    const one=!it.end||it.end===it.start;
+    let bar;
+    if(one&&it.level===0)bar='<div class="g-ms" style="left:'+(off(it.start)-2)+'px" title="'+esc(it.name+' · '+range(it))+'"></div>';
+    else bar='<div class="g-bar" style="left:'+off(it.start)+'px;width:'+(one?DW:off(it.end)-off(it.start)+DW)+'px" title="'+esc(it.name+' · '+range(it))+'"></div>';
+    h+='<div class="g-row '+KIND[it.kind].cls+' '+(it.level===0?'grp':'l'+it.level)+'"><div class="g-label"><span>'+esc(it.name)+'</span><small>'+range(it)+'</small></div><div class="g-track" style="width:'+W+'px;background-image:'+grid+';background-position:'+(fm*DW)+'px 0">'+bar+'</div></div>';
+  });
+  const n=new Date(),t=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  if(t>=S&&t<=E)h+='<div class="g-today" style="left:'+(LW+Math.round((t-S)/DAY)*DW+6)+'px"><b>오늘 '+(t.getMonth()+1)+'/'+t.getDate()+'</b></div>';
+  g.innerHTML=h;
+})();
+(function phases(){
+  let h='';
+  DATA.phases.forEach(([title,a,b])=>{
+    const its=DATA.items.slice(a,b),top=its[0];
+    h+='<div class="card phase '+KIND[top.kind].cls+'"><div class="phase-h"><b>'+esc(title)+'</b><span>'+range(top)+'</span></div><table>';
+    its.slice(1).forEach(it=>{h+='<tr><td class="'+(it.level===2?'l2':'')+'">'+(it.level===2?'ㄴ ':'')+esc(it.name)+'</td><td class="d">'+range(it)+'</td></tr>';});
+    h+='</table></div>';
+  });
+  document.getElementById('phases').innerHTML=h;
+})();
+(function tl(){
+  document.getElementById('tl').innerHTML=DATA.timeline.map(it=>'<div class="tl-item '+KIND[it.kind].cls+(it.ms?' ms':'')+'"><div class="tl-time">'+esc(it.time)+'</div><div class="tl-dot'+(it.ms?' ms':'')+'"></div><div class="tl-name">'+esc(it.name)+'<small>'+KIND[it.kind].label+'</small></div></div>').join('');
+})();
+function show(){
+  const k=(location.hash||'#all').slice(1);const key=['all','phase','open'].includes(k)?k:'all';
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id==='s-'+key));
+  document.querySelectorAll('nav.tabs a').forEach(a=>{const on=a.dataset.t===key;a.classList.toggle('on',on);a.setAttribute('aria-selected',on);});
+}
+window.addEventListener('hashchange',show);show();
+</script>
+</body>
+</html>
